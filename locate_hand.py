@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 import time
 
+print("project start")
 cap = cv2.VideoCapture(1)
 
 mpHands = mp.solutions.hands
