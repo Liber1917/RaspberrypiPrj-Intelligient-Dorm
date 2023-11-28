@@ -17,3 +17,15 @@ Follow the instruction from its official Getting Started on GitHub.
 Follow the instruction from net.
 
 ## Update WIFI Configuration
+
+## Login the NEU ipgw
+
+``pip install NEU-ipgw-manager``
+
+## Use elinks/w3m
+
+To surf the Internet.
+
+> https://cloud.tencent.com/developer/article/2363984
+>
+> https://www.cnblogs.com/yinghao-liu/p/6533206.html
