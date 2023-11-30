@@ -1,49 +1,55 @@
 import wave
-import sys
+import os
 import json
 
 from vosk import Model, KaldiRecognizer, SetLogLevel
 
-from record_10s import record_every_10s
 
-# You can set log level to -1 to disable debug messages
-SetLogLevel(-1)
+def voice_recognization():
+    # You can set log level to -1 to disable debug messages
+    str_ret = ''
+    SetLogLevel(-1)
+    model = Model("model-small")
 
-num = input("录音编号")
-record_every_10s(num)
-wf = wave.open("sound/"+str(num)+".wav")
+    num = 0
+    while True:
+        if os.path.exists("sound/" + str(num) + ".wav"):
+            wf = wave.open("sound/" + str(num) + ".wav")
+            rec = KaldiRecognizer(model, wf.getframerate())
+            rec.SetWords(True)
+            str_ret = ""
+            print("开始识别")
+            while True:
+                data = wf.readframes(4000)
+                if len(data) == 0:
+                    break
+                if rec.AcceptWaveform(data):
+                    result = rec.Result()
 
-# model = Model(lang="en-us")
-# You can also init model by name or with a folder path
-# model = Model(model_name="vosk-model-en-us-0.21")
-# 设置模型所在路径，刚刚4.1中解压出来的路径   《《《《
-# model = Model("model")
-model = Model("model-small")
+                    result = json.loads(result)
+                    if 'text' in result:
+                        str_ret += result['text'] + ' '
 
-rec = KaldiRecognizer(model, wf.getframerate())
-rec.SetWords(True)
-# rec.SetPartialWords(True)   # 注释这行   《《《《
+            result = json.loads(rec.FinalResult())
+            if 'text' in result:
+                str_ret += result['text']
 
-str_ret = ""
+            print(num, "  ", str_ret)
+            wf.close()
+            find_keyword(str_ret)
+            num += 1
+        else:
+            print("文件不存在")
 
-print("开始识别")
-while True:
-    data = wf.readframes(4000)
-    if len(data) == 0:
-        break
-    if rec.AcceptWaveform(data):
-        result = rec.Result()
-        # print(result)
 
-        result = json.loads(result)
-        if 'text' in result:
-            str_ret += result['text'] + ' '
-    # else:
-    #     print(rec.PartialResult())
+def find_keyword(ret):
+    with open("keyword_order.json", 'r', encoding='utf-8') as file:
+        data = json.load(file)
+        for key, value in data.items():
+            if key in ret:
+                print(value)
+                return value
 
-# print(rec.FinalResult())
-result = json.loads(rec.FinalResult())
-if 'text' in result:
-    str_ret += result['text']
 
-print(str_ret)
+if __name__ == '__main__':
+    voice_recognization()

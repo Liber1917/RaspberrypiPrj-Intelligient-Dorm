@@ -6,7 +6,7 @@ import numpy as np
 from Gesture.locate_hand import landmarks_to_numpy
 from Gesture.locate_hand import process_mark_data
 
-loaded_model = tf.saved_model.load('../Gesture/model/src')
+loaded_model = tf.saved_model.load('model/src')
 
 print("project start")
 cap = cv2.VideoCapture(1)

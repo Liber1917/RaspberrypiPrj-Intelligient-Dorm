@@ -3,41 +3,47 @@ import pyaudio
 import wave
 
 
-def record_every_10s(str_name):
-    CHUNK = 1024
-    FORMAT = pyaudio.paInt16
-    CHANNELS = 1
-    RATE = 16000
-    RECORD_SECONDS = 10
-    WAVE_OUTPUT_FILENAME = "sound/"+str(str_name)+".wav"
+def record_every_10s():
+    name = 0
+    while True:
+        CHUNK = 1024
+        FORMAT = pyaudio.paInt16
+        CHANNELS = 1
+        RATE = 16000
+        RECORD_SECONDS = 10
+        WAVE_OUTPUT_FILENAME = "sound/"+str(name)+".wav"
 
-    p = pyaudio.PyAudio()
+        p = pyaudio.PyAudio()
 
-    stream = p.open(format=FORMAT,
-                    channels=CHANNELS,
-                    rate=RATE,
-                    input=True,
-                    frames_per_buffer=CHUNK)
+        stream = p.open(format=FORMAT,
+                        channels=CHANNELS,
+                        rate=RATE,
+                        input=True,
+                        frames_per_buffer=CHUNK)
 
-    print("开始录音,请说话......")
+        print("开始录音,请说话......")
 
-    frames = []
+        frames = []
 
-    for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
-        data = stream.read(CHUNK)
-        frames.append(data)
+        for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
+            data = stream.read(CHUNK)
+            frames.append(data)
 
-    print("录音结束,请闭嘴!")
+        stream.stop_stream()
+        stream.close()
+        p.terminate()
 
-    stream.stop_stream()
-    stream.close()
-    p.terminate()
+        wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
+        wf.setnchannels(CHANNELS)
+        wf.setsampwidth(p.get_sample_size(FORMAT))
+        wf.setframerate(RATE)
+        wf.writeframes(b''.join(frames))
+        wf.close()
+        name+=1
 
-    wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
-    wf.setnchannels(CHANNELS)
-    wf.setsampwidth(p.get_sample_size(FORMAT))
-    wf.setframerate(RATE)
-    wf.writeframes(b''.join(frames))
-    wf.close()
+
+if __name__ == '__main__':
+    record_every_10s()
+
 
 
