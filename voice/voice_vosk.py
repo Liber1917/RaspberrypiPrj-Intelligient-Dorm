@@ -1,3 +1,4 @@
+import time
 import wave
 import os
 import json
@@ -9,7 +10,8 @@ def voice_recognization():
     # You can set log level to -1 to disable debug messages
     str_ret = ''
     SetLogLevel(-1)
-    model = Model("model-small")
+    print("开始加载模型")
+    model = Model("../../model")
 
     num = 0
     while True:
@@ -40,6 +42,7 @@ def voice_recognization():
             num += 1
         else:
             print("文件不存在")
+            time.sleep(2)
 
 
 def find_keyword(ret):
