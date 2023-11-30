@@ -157,12 +157,15 @@ def main():
 
 if __name__ == "__main__":
     main()
-    date = datetime.now().weekday()
+    date = datetime.now().weekday()+1
     print(date)
-    if date == 0:
-        date = 7
+
     print(time_table[0])
     time.sleep(1)
     time_table = sorted(time_table[1:], key=lambda x: x[0])
     for schedule in time_table:
         print(schedule)
+        if schedule[0] == date:
+            engine = pyttsx3.init()
+            engine.say("从"+schedule[1]+"在"+schedule[3]+"上"+schedule[2])
+            engine.runAndWait()
