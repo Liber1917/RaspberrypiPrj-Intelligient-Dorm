@@ -1,12 +1,14 @@
 import threading
 from queue import Queue
-from record_10s import record_every_10s
-from voice_vosk import voice_recognization
+from voice.record_10s import record_every_10s
+from voice.voice_vosk import voice_recognization
+from order_request.order_request import order_react
 
 order_queue = Queue()
 
 thread = threading.Thread(target=record_every_10s)
 thread2 = threading.Thread(target=voice_recognization, args=(order_queue,))
+thread3 = threading.Thread(target=order_react, args=(order_queue,))
 
 if __name__ == '__main__':
     # 启动线程

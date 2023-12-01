@@ -143,7 +143,7 @@ def login(switch):
 def main():
     # options = Options()
     # options.add_experimental_option("detach", True)  # 防止浏览器自动关闭
-
+    global time_table
     print('''
     选择你要登录的网址：
     1. 信息门户
@@ -154,18 +154,25 @@ def main():
     ''')
     # login(input(), options)
     login('4')
-
-if __name__ == "__main__":
-    main()
-    date = datetime.now().weekday()+1
+    date = datetime.now().weekday() + 1
     print(date)
 
     print(time_table[0])
-    time.sleep(1)
+    time.sleep(0.1)
     time_table = sorted(time_table[1:], key=lambda x: x[0])
+    curr_week = set_week()
     for schedule in time_table:
         print(schedule)
-        if schedule[0] == date:
+        if schedule[0] == date and int(curr_week) in schedule[4]:
             engine = pyttsx3.init()
-            engine.say("从"+schedule[1]+"在"+schedule[3]+"上"+schedule[2])
+            engine.say("从" + schedule[1] + "在" + schedule[3] + "上" + schedule[2])
             engine.runAndWait()
+
+
+def set_week():
+    pass
+    return 14
+
+
+if __name__ == "__main__":
+    main()
