@@ -3,7 +3,7 @@ import pyaudio
 import wave
 
 
-def record_every_10s(order_queue):
+def record_every_10s():
     name = 0
     while True:
         CHUNK = 1024
