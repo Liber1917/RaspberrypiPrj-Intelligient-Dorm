@@ -38,7 +38,7 @@ def voice_recognization(order_queue):
     str_ret = ''
     SetLogLevel(-1)
     print("开始加载模型")
-    model = Model("../../model")
+    model = Model("./model-small")
 
     num = 0
     last_clean_num = 0
