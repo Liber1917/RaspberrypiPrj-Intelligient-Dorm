@@ -78,7 +78,7 @@ def login(switch):
         print("无效的选择")
 
     # 指定密钥文件路径，文件第一行放账号，第二行放密码
-    file_path = './Lginconf.txt'
+    file_path = '../get_class/Lginconf.txt'
 
     with open(file_path, 'r') as file:
         KEY = file.read().split("\n")
@@ -141,6 +141,8 @@ def login(switch):
 
 
 def main():
+    engine = pyttsx3.init()
+
     # options = Options()
     # options.add_experimental_option("detach", True)  # 防止浏览器自动关闭
     global time_table
@@ -161,13 +163,18 @@ def main():
     time.sleep(0.1)
     time_table = sorted(time_table[1:], key=lambda x: x[0])
     curr_week = set_week()
+    have_class = False
     for schedule in time_table:
         print(schedule)
         if schedule[0] == date and int(curr_week) in schedule[4]:
-            engine = pyttsx3.init()
+            have_class = True
+            engine.setProperty("volume", 1.0)
             engine.say("从" + schedule[1] + "在" + schedule[3] + "上" + schedule[2])
             engine.runAndWait()
-
+    if not have_class:
+        engine.setProperty("volume", 1.0)
+        engine.say("今天没有课")
+        engine.runAndWait()
 
 def set_week():
     pass

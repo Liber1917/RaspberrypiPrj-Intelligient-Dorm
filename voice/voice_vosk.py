@@ -4,6 +4,7 @@ import os
 import json
 
 from vosk import Model, KaldiRecognizer, SetLogLevel
+from voice.auto_clean import clean_cache
 
 
 def send_pipe(order_queue, action):
@@ -24,7 +25,7 @@ def send_pipe(order_queue, action):
 
 
 def find_keyword(ret):
-    with open("keyword_order.json", 'r', encoding='utf-8') as file:
+    with open("../voice/keyword_order.json", 'r', encoding='utf-8') as file:
         data = json.load(file)
         for key, value in data.items():
             if key in ret:
@@ -40,9 +41,13 @@ def voice_recognization(order_queue):
     model = Model("../../model")
 
     num = 0
+    last_clean_num = 0
     while True:
-        if os.path.exists("sound/" + str(num) + ".wav"):
-            wf = wave.open("sound/" + str(num) + ".wav")
+        if num - last_clean_num > 270:
+            clean_cache(0, num)
+            last_clean_num = num
+        if os.path.exists("../sound/" + str(num) + ".wav"):
+            wf = wave.open("../sound/" + str(num) + ".wav")
             rec = KaldiRecognizer(model, wf.getframerate())
             rec.SetWords(True)
             str_ret = ""
@@ -56,12 +61,12 @@ def voice_recognization(order_queue):
 
                     result = json.loads(result)
                     if 'text' in result:
-                        str_ret += result['text'] + ''
+                        str_ret += result['text']
 
-            result = json.loads(rec.FinalResult())
-            if 'text' in result:
-                str_ret += result['text']
-
+            # result = json.loads(rec.FinalResult())
+            # if 'text' in result:
+            #     str_ret += result['text']
+            str_ret = str_ret.replace(" ", "")
             print(num, "  ", str_ret)
             wf.close()
             order = find_keyword(str_ret)
@@ -73,4 +78,4 @@ def voice_recognization(order_queue):
 
 
 if __name__ == '__main__':
-    voice_recognization()
+    voice_recognization(order_queue=None)

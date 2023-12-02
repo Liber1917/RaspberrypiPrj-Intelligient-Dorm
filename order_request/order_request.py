@@ -1,6 +1,7 @@
 from get_class import p_id
 from voice.list_keywords import listed
 
+
 def order_react(order_queue):
     while True:
         if order_queue.empty():

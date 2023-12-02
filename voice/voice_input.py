@@ -10,7 +10,7 @@ def save_as_wav(text, output_file):
 
 # 示例文本和输出文件路径
 text = "开灯开个锤子啊"
-output_file = "sound/1.wav"
+output_file = "../sound/1.wav"
 
 # 将文本保存为 .wav 文件
 save_as_wav(text, output_file)

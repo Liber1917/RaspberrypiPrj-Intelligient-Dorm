@@ -3,15 +3,19 @@ import pyaudio
 import wave
 
 
-def record_every_10s(order_queue):
+def record_every_10s():
+    """
+    每5秒录音一次
+    :return:
+    """
     name = 0
     while True:
         CHUNK = 1024
         FORMAT = pyaudio.paInt16
         CHANNELS = 1
         RATE = 16000
-        RECORD_SECONDS = 10
-        WAVE_OUTPUT_FILENAME = "sound/"+str(name)+".wav"
+        RECORD_SECONDS = 5
+        WAVE_OUTPUT_FILENAME = "../sound/"+str(name)+".wav"
 
         p = pyaudio.PyAudio()
 

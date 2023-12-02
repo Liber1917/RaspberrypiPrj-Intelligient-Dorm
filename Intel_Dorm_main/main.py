@@ -14,6 +14,8 @@ if __name__ == '__main__':
     # 启动线程
     thread.start()
     thread2.start()
+    thread3.start()
 
     thread.join()
     thread2.join()
+    thread3.join()
