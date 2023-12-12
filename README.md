@@ -23,5 +23,5 @@ deep_learning.py是用于训练模型的， 用于训练模型。
 
 ---
 ## 迭代方案
-
+### 一期设想-上课用
 ![一期设想-上课用](Intelligient%20Dorm.svg)
