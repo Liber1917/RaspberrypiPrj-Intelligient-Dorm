@@ -2,7 +2,7 @@ import os
 
 
 def clean_cache(start, end):
-    file_path = '../sound/'
+    file_path = 'voice/sound/'
     num = start
 
     for i in range(num, end):

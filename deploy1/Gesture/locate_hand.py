@@ -148,3 +148,6 @@ def process_mark_data(hand_arr):
     if rh_marks.all() != 0:
         rh_marks = standardization(rh_marks)
     return np.array([lh_marks, rh_marks])
+    
+    
+#locate_hand()

@@ -25,7 +25,7 @@ def send_pipe(order_queue, action):
 
 
 def find_keyword(ret):
-    with open("../voice/keyword_order.json", 'r', encoding='utf-8') as file:
+    with open("voice/keyword_order.json", 'r', encoding='utf-8') as file:
         data = json.load(file)
         for key, value in data.items():
             if key in ret:
@@ -38,16 +38,17 @@ def voice_recognization(order_queue):
     str_ret = ''
     SetLogLevel(-1)
     print("开始加载模型")
-    model = Model("./model-small")
+    model = Model("voice/model-small")
 
     num = 0
-    last_clean_num = 0
+    last_clean_num = 1
     while True:
+        voice_path = "voice/sound/" + str(num) + ".wav"
         if num - last_clean_num > 270:
-            clean_cache(0, num)
+            clean_cache(1, num)
             last_clean_num = num
-        if os.path.exists("../sound/" + str(num) + ".wav"):
-            wf = wave.open("../sound/" + str(num) + ".wav")
+        if os.path.exists(voice_path):
+            wf = wave.open(voice_path)
             rec = KaldiRecognizer(model, wf.getframerate())
             rec.SetWords(True)
             str_ret = ""

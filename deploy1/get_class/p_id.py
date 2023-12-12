@@ -7,6 +7,7 @@ try:
     from selenium import webdriver
     from selenium.webdriver.common.by import By
     from selenium.webdriver.chrome.options import Options
+    from selenium.webdriver.chrome.service import Service
     from selenium.webdriver.support.ui import Select
     from selenium.webdriver.support.wait import WebDriverWait
     from selenium.webdriver.support import expected_conditions as EC
@@ -21,7 +22,7 @@ try:
     import re
 except ImportError:
     print("re未安装")
-
+import csv
 
 time_table = [["星期", "上课时间", "课程名称", "地点", "上课周数"]]
 
@@ -58,9 +59,11 @@ def split_title(sub_id, subtitle, sub_rowspan):
 
 def login(switch):
     chrome_options = Options()
+    chrome_options.binary_location = '/snap/chromium/2717/usr/lib/chromium-browser/chrome'
     chrome_options.add_argument('--headless')
-    driver = webdriver.Edge(options=chrome_options)  # 启动浏览器 options=options
-
+    service = Service(executable_path=r'/snap/chromium/2717/usr/lib/chromium-browser/chromedriver')
+    driver = webdriver.Chrome(service=service, options=chrome_options)  # 启动浏览器 options=options
+	
     print("start")
     start_time = time.time()  # Start timing
 
@@ -78,8 +81,8 @@ def login(switch):
         print("无效的选择")
 
     # 指定密钥文件路径，文件第一行放账号，第二行放密码
-    file_path = '../get_class/Lginconf.txt'
-
+    file_path = 'get_class/Lginconf.txt'
+#get_class/
     with open(file_path, 'r') as file:
         KEY = file.read().split("\n")
 
@@ -163,23 +166,59 @@ def main():
     time.sleep(0.1)
     time_table = sorted(time_table[1:], key=lambda x: x[0])
     curr_week = set_week()
-    have_class = False
-    for schedule in time_table:
-        print(schedule)
-        if schedule[0] == date and int(curr_week) in schedule[4]:
-            have_class = True
-            engine.setProperty("volume", 1.0)
-            engine.say("从" + schedule[1] + "在" + schedule[3] + "上" + schedule[2])
-            engine.runAndWait()
-    if not have_class:
+    if curr_week == -1:
+        print("放假了孩子")
         engine.setProperty("volume", 1.0)
-        engine.say("今天没有课")
+        engine.say("放假了孩子")
         engine.runAndWait()
+    else:
+        have_class = False
+        for schedule in time_table:
+            print(schedule)
+            if schedule[0] == date and int(curr_week) in schedule[4]:
+                have_class = True
+                engine.setProperty("volume", 1.0)
+                engine.say("从" + schedule[1] + "在" + schedule[3] + "上" + schedule[2])
+                engine.runAndWait()
+        if not have_class:
+            engine.setProperty("volume", 1.0)
+            engine.say("今天没有课")
+            engine.runAndWait()
 
 def set_week():
-    pass
-    return 14
+    return 16
+    fname = '../get_class/school_schedule.csv'
+    #fname = 'school_schedule.csv'
+
+    csv_data = csv.reader(open(fname, "r"))
+    month = time.localtime().tm_mon
+    day = time.localtime().tm_mday
+    if int(day)<10:
+        curr_time = str(str(month)+"."+"0"+str(day))
+    else:
+        curr_time = str(str(month)+"."+str(day))
+    curr_time = float(curr_time)
+    print("curr", curr_time)
+    weeks = []
+    for days in csv_data:
+        date_pattern = r"(\d{1,2})月(\d{1,2})日"
+        match = re.search(date_pattern, days[0])
+        if match:
+            month = match.group(1)
+            day = match.group(2)
+            if int(day)<10:
+                format_time = str(month+"."+"0"+day)
+            else:
+                format_time = str(month+"."+day)
+            weeks.append(float(format_time))
+    print(weeks)
+    for week in weeks:
+        if curr_time<week:
+            print(weeks.index(week))
+            return weeks.index(week)
+    return -1
 
 
 if __name__ == "__main__":
     main()
+    # a = set_week()
