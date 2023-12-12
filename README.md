@@ -22,5 +22,5 @@ deep_learning.py是用于训练模型的， 用于训练模型。
 1.在Lginconf.txt中填入学号和密码， 用于登录教务系统。
 
 ---
-
+一期设想-上课用
 ![Intelligient Dorm](Intelligient%20Dorm.svg)
