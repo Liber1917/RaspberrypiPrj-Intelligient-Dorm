@@ -20,3 +20,7 @@ deep_learning.py是用于训练模型的， 用于训练模型。
 同时修改Test_recognition.py中第九行的模型路径。
 ## Get_class 课表获取
 1.在Lginconf.txt中填入学号和密码， 用于登录教务系统。
+
+---
+
+![Intelligient Dorm](Intelligient%20Dorm.svg)
