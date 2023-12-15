@@ -145,6 +145,7 @@ def login(switch):
 
 def main():
     engine = pyttsx3.init()
+    engine.setProperty("voice", 'zh')
 
     # options = Options()
     # options.add_experimental_option("detach", True)  # 防止浏览器自动关闭

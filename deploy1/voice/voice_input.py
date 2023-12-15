@@ -2,9 +2,11 @@ import wave
 import pyttsx3
 
 
-def save_as_wav(text, output_file):
+def save_as_wav():
     engine = pyttsx3.init()
-    engine.save_to_file(text, output_file)
+    engine.setProperty("volume", 1.0)
+    engine.setProperty("voice", 'zh')
+    engine.say("今天没有课")
     engine.runAndWait()
 
 
@@ -13,4 +15,4 @@ text = "我在"
 output_file = "../sound/0.wav"
 
 # 将文本保存为 .wav 文件
-save_as_wav(text, output_file)
+save_as_wav()

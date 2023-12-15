@@ -10,7 +10,7 @@ def order_react(order_queue):
         order = order_queue.get()
         if order == 'voice3':
             p_id.main()
-        elif order == 'voice0':
+        elif order == 'voice0' or order == 'voice1':
             print("switching light")
             if light_status == 0:
                 light_control.light_opening()

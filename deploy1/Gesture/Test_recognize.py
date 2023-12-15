@@ -10,8 +10,8 @@ try:
     from queue import Queue
 except ImportError:
     print("lack mediapipe or numpy")
-from locate_hand import landmarks_to_numpy
-from locate_hand import process_mark_data
+from Gesture.locate_hand import landmarks_to_numpy
+from Gesture.locate_hand import process_mark_data
 
 
 def get_gesture(order_queue):
