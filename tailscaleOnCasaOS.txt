@@ -1,0 +1,1 @@
+docker run -d --name=tailscaled -v varlibvarlib -v devnettundevnettun --network=host --cap-add=NET_ADMIN --cap-add=NET_RAW tailscaletailscale
